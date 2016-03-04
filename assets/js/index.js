@@ -9,10 +9,76 @@ jQuery.fn.reverse = [].reverse;
 
 var App = function() {
   $('document').ready(function(){
+    var deviceAnimationInterval;
     var $tagline = $('h2.tagline');
     var $mainCTA = $('.hero .button-primary');
     var $navLinks = $('.navbar a');
     typewriter.prepare('.typewriter');
+
+    var animateDevices = function() {
+      var $user1 = $('svg .user-1');
+      var $user2 = $('svg .user-2');
+      var $user3 = $('svg .user-3');
+
+      var $message1 = $('svg .message-1');
+      var $message2 = $('svg .message-2');
+      var $message3 = $('svg .message-3');
+      var $message4 = $('svg .message-4');
+
+      var DURATION = 300;
+      var DELAY = 500;
+
+      $user1.velocity('transition.fadeIn', {
+        loop: true,
+        duration: DURATION,
+      });
+
+      $user2.velocity('transition.fadeIn', {
+        loop: true,
+        delay: DELAY,
+        duration: DURATION
+      });
+
+      $user3.velocity('transition.fadeIn', {
+        loop: true,
+        delay: DELAY * 2,
+        duration: DURATION,
+      });
+
+      $message1.velocity('transition.slideLeftIn', {
+        loop: true,
+        duration: DURATION
+      });
+
+      $message2.velocity('transition.slideRightIn', {
+        loop: true,
+        delay: DELAY,
+        duration: DURATION
+      });
+
+      $message3.velocity('transition.slideLeftIn', {
+        loop: true,
+        delay: DELAY * 2,
+        duration: DURATION
+      });
+
+      $message4.velocity('transition.slideLeftIn', {
+        loop: true,
+        delay: DELAY * 3,
+        duration: DURATION
+      });
+
+      // Hide all the animated items
+      setTimeout(function() {
+        $user1.velocity('transition.fadeOut', { duration: 200 });
+        $user2.velocity('transition.fadeOut', { duration: 200 });
+        $user3.velocity('transition.fadeOut', { duration: 200 });
+        $message1.velocity('transition.fadeOut', { duration: 200 });
+        $message2.velocity('transition.fadeOut', { duration: 200 });
+        $message3.velocity('transition.fadeOut', { duration: 200 });
+        $message4.velocity('transition.fadeOut', { duration: 200 });
+      }, 3500);
+    };
 
     // Animate the hero items and nav bar
     $navLinks.velocity('transition.slideDownIn', {
@@ -33,70 +99,21 @@ var App = function() {
       }
     });
 
-    var productWaypoint = new Waypoint({
-      element: $('section.product')[0],
-      offset: 300,
-      handler: function(direction) {
-        if (direction === 'down') {
-          var $user1 = $('svg .user-1');
-          var $user2 = $('svg .user-2');
-          var $user3 = $('svg .user-3');
+    // var productWaypoint = new Waypoint({
+    //   element: $('section.product')[0],
+    //   offset: 300,
+    //   handler: function(direction) {
+    //     if (direction === 'down') {
+    //       if (productWaypoint) {
+    //         animateDevices();
 
-          var $message1 = $('svg .message-1');
-          var $message2 = $('svg .message-2');
-          var $message3 = $('svg .message-3');
-          var $message4 = $('svg .message-4');
-
-          var DURATION = 300;
-          var DELAY = 500;
-
-          $user1.velocity('transition.fadeIn', {
-            loop: true,
-            duration: DURATION,
-          });
-
-          $user2.velocity('transition.fadeIn', {
-            loop: true,
-            delay: DELAY,
-            duration: DURATION
-          });
-
-          $user3.velocity('transition.fadeIn', {
-            loop: true,
-            delay: DELAY * 2,
-            duration: DURATION,
-          });
-
-          $message1.velocity('transition.slideLeftIn', {
-            loop: true,
-            duration: DURATION
-          });
-
-          $message2.velocity('transition.slideRightIn', {
-            loop: true,
-            delay: DELAY,
-            duration: DURATION
-          });
-
-          $message3.velocity('transition.slideLeftIn', {
-            loop: true,
-            delay: DELAY * 2,
-            duration: DURATION
-          });
-
-          $message4.velocity('transition.slideLeftIn', {
-            loop: true,
-            delay: DELAY * 3,
-            duration: DURATION
-          });
-
-
-          if (productWaypoint) {
-            productWaypoint.disable();
-          }
-        }
-      }
-    });
+    //         // TODO (EK): cancel timeout when not in view
+    //         deviceAnimationInterval = setInterval(animateDevices, 5000);
+    //         productWaypoint.disable();
+    //       }
+    //     }
+    //   }
+    // });
 
     var quickStartWaypoint = new Waypoint({
       element: $('section.quick-start')[0],
@@ -182,6 +199,11 @@ var App = function() {
         }
       });
     });
+
+    // Kick off the device animation loop
+    animateDevices();
+    // TODO (EK): cancel timeout when not in view
+    deviceAnimationInterval = setInterval(animateDevices, 5000);
 
     // var twttr = window.twttr;
 
