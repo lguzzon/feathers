@@ -2,7 +2,7 @@
   "site": {
     "baseUrl": "http://feathersjs.com",
     "title": "Feathers - A minimalist real-time framework for tomorrow's apps.",
-    "description": "Manage NoSQL and SQL databases like MySQL, Postgres, SQLite, MongoDB, Redis and more! All in one beautiful app. Available for Mac, Linux, and Windows. Download for free today!",
+    "description": "Build incredible real-time applications in record time.",
     "keywords": "feathers, server, websocket, application, client, real-time, Stripe, socket.io, javascript, sql, nosql, sql server, mysql, postgres, postgresql, mongo, mongodb, sqlite, sqllite, redis, nedb, mongoose, sequelize",
     "author": {
       "name": "Eric Kryski",
