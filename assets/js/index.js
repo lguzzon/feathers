@@ -12,7 +12,7 @@ var App = function() {
     var deviceAnimationInterval;
     var $tagline = $('h2.tagline');
     var $mainCTA = $('.hero .button-primary');
-    var $navLinks = $('.navbar a');
+    var $navLinks = $('.navbar ul a');
     typewriter.prepare('.typewriter');
 
     var animateDevices = function() {
@@ -83,37 +83,8 @@ var App = function() {
     // Animate the hero items and nav bar
     $navLinks.velocity('transition.slideDownIn', {
       stagger: 150,
-      visibility: 'visible',
-      complete: function(){
-        $tagline.velocity('transition.fadeIn', {
-          visibility: 'visible',
-          duration: 500,
-          complete: function(){
-            $mainCTA.velocity('transition.fadeIn', {
-              duration: 500,
-              display: 'block',
-              visibility: 'visible'
-            });
-          }
-        });
-      }
+      visibility: 'visible'
     });
-
-    // var productWaypoint = new Waypoint({
-    //   element: $('section.product')[0],
-    //   offset: 300,
-    //   handler: function(direction) {
-    //     if (direction === 'down') {
-    //       if (productWaypoint) {
-    //         animateDevices();
-
-    //         // TODO (EK): cancel timeout when not in view
-    //         deviceAnimationInterval = setInterval(animateDevices, 5000);
-    //         productWaypoint.disable();
-    //       }
-    //     }
-    //   }
-    // });
 
     var quickStartWaypoint = new Waypoint({
       element: $('section.quick-start')[0],
