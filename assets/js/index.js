@@ -138,6 +138,7 @@ var App = function() {
     
     $mainCTA.on('touchstart mousedown', function(ev){
       ev.preventDefault();
+      ga('send', 'event', 'button', 'click', 'top_get_started_button');
 
       $('.quick-start').velocity("scroll", {
         container: $('body'),
@@ -145,6 +146,16 @@ var App = function() {
         easing: "easeInBack",
         offset: 1
       });
+    });
+
+    $('footer a').on('touchstart mousedown', function(ev) {
+      var $el = $(ev.target);
+      var text = $el.text();
+      ga('send', 'event', 'link', 'click', text);
+    });
+
+    $('.callout button-primary').on('touchstart mousedown', function(ev) {
+      ga('send', 'event', 'link', 'click', 'bottom_get_started_button');
     });
 
     $('.example .side-nav button').on('touchstart mousedown', function(ev){
@@ -175,6 +186,7 @@ var App = function() {
     animateDevices();
     // TODO (EK): cancel timeout when not in view
     deviceAnimationInterval = setInterval(animateDevices, 5000);
+
 
     // var twttr = window.twttr;
 
