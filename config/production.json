@@ -23,12 +23,12 @@
       "author": "Eric Kryski"
     },
     "twittercard": {
-      "card": "summary_card_large",
+      "card": "summary_large_image",
       "site": "@feathersjs",
       "title": "Feathers - A minimalist real-time framework for tomorrow's apps.",
-      "description": "Wow your users. Build incredible real-time applications in record time.",
+      "description": "Wow your users. Build incredible real-time applications in record time with Feathers.",
       "creator": "@ekryski",
-      "image": "/img/twitter-card-image.png"
+      "image": "http://feathersjs.com/img/twitter-card-image.png"
     },
     "facebookgraph": {
       "title": "Feathers - A minimalist real-time framework for tomorrow's apps.",
