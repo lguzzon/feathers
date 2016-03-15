@@ -175,6 +175,18 @@ var App = function() {
       ga('send', 'event', 'link', 'click', 'bottom_get_started_button');
     });
 
+    $('.product-hunt .twitter-link').on('touchstart mousedown', function(ev) {
+      ga('send', 'event', 'link', 'click', 'ph_twitter_share_link');
+    });
+
+    $('.product-hunt .github-link').on('touchstart mousedown', function(ev) {
+      ga('send', 'event', 'link', 'click', 'ph_github_star_link');
+    });
+
+    $('.github-button').on('touchstart mousedown', function(ev) {
+      ga('send', 'event', 'link', 'click', 'github_button');
+    });
+
     $('.example .side-nav button').on('touchstart mousedown', function(ev){
       ev.preventDefault();
 
