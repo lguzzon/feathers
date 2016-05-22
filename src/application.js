@@ -9,6 +9,15 @@ const Proto = Uberproto.extend({
   create: null
 });
 
+const hasMethod = (object, methods) => methods.some(name =>
+  (object && typeof object[name] === 'function')
+);
+
+const isSubApp = object => object && object._app;
+
+// If it contains one of the methods it's a service
+const isService = object => hasMethod(object, methods.concat('setup'));
+
 export default {
   init() {
     Object.assign(this, {
@@ -16,17 +25,20 @@ export default {
       mixins: mixins(),
       services: {},
       providers: [],
-      _setup: false
+      _setup: false,
+      _app: true
     });
   },
 
   service(location, service, options = {}) {
     location = stripSlashes(location);
 
-    if(!service) {
+    // If they didn't pass a service to initialize then we
+    // must be fetching and returning the service for use.
+    if (!service) {
       const current = this.services[location];
 
-      if(typeof current === 'undefined' && typeof this.defaultService === 'function') {
+      if (typeof current === 'undefined' && typeof this.defaultService === 'function') {
         return this.service(location, this.defaultService(location), options);
       }
 
@@ -37,10 +49,11 @@ export default {
 
     debug(`Registering new service at \`${location}\``);
 
-    // Add all the mixins
+    // Add all the mixins for each service
     this.mixins.forEach(fn => fn.call(this, protoService));
 
-    if(typeof protoService._setup === 'function') {
+    // If it has a setup function, run it
+    if (typeof protoService._setup === 'function') {
       protoService._setup(this, location);
     }
 
@@ -58,7 +71,12 @@ export default {
     return (this.services[location] = protoService);
   },
 
-  use(location) {
+  use(path) {
+    // This is to handle the case where you have middleware that
+    // you want to run before and after your service. For example,
+    // 
+    // app.use('/messages', middleware1, service, middleware2)
+    // 
     let service, middleware = Array.from(arguments)
       .slice(1)
       .reduce(function (middleware, arg) {
@@ -67,7 +85,7 @@ export default {
         } else if (!service) {
           service = arg;
         } else {
-          throw new Error('invalid arg passed to app.use');
+          throw new Error('Invalid arguments passed to app.use');
         }
         return middleware;
       }, {
@@ -75,17 +93,17 @@ export default {
         after: []
       });
 
-    const hasMethod = methods => methods.some(name =>
-      (service && typeof service[name] === 'function')
-    );
+    // TODO (EK): If the service is a sub-app get the parent providers and
+    // middleware and apply it to me using any I have defined already as the default
 
-    // Check for service (any object with at least one service method)
-    if(hasMethod(['handle', 'set']) || !hasMethod(this.methods.concat('setup'))) {
+    // Check to see if it is a sub-app or a service
+    // (any object with at least one service method)
+    if (isSubApp(service) || !isService(service)) {
       return this._super.apply(this, arguments);
     }
 
     // Any arguments left over are other middleware that we want to pass to the providers
-    this.service(location, service, { middleware });
+    this.service(path, service, { middleware });
 
     return this;
   },
@@ -93,6 +111,7 @@ export default {
   setup() {
     // Setup each service (pass the app so that they can look up other services etc.)
     Object.keys(this.services).forEach(path => {
+      console.log('Mount Path', this.mountpath, path);
       const service = this.services[path];
 
       debug(`Setting up service for \`${path}\``);
